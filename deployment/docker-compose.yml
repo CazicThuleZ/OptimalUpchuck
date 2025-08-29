@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16.1
+    container_name: optimalupchuck-postgres
+    environment:
+      POSTGRES_DB: optimalupchuck
+      POSTGRES_USER: optimalupchuck
+      POSTGRES_PASSWORD: optimalupchuck_dev_password
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../scripts/docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:ro
+    networks:
+      - optimalupchuck-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U optimalupchuck -d optimalupchuck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 80s
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: optimalupchuck-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: optimalupchuck
+      RABBITMQ_DEFAULT_PASS: optimalupchuck_dev_password
+      RABBITMQ_DEFAULT_VHOST: optimalupchuck
+    ports:
+      - "5672:5672"    # AMQP port
+      - "15672:15672"  # Management UI port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - optimalupchuck-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: optimalupchuck-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - optimalupchuck-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  ollama_data:
+    driver: local
+
+networks:
+  optimalupchuck-network:
+    driver: bridge

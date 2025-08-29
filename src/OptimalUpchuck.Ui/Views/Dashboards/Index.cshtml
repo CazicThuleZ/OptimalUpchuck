@@ -1,0 +1,559 @@
+﻿@page "/dashboard"
+
+@{
+    ViewBag.Title = "Health Dashboard";
+}
+
+@section styles
+{
+
+}
+
+<div class="container-fluid">
+
+    @await Html.PartialAsync("~/Views/Shared/Partials/_PageTitle.cshtml")
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header border-dashed card-tabs d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h4 class="card-title">Diet Statics</h4>
+                    </div>
+                    <ul class="nav nav-tabs nav-justified card-header-tabs nav-bordered">
+                        <li class="nav-item">
+                            <a href="#today-ct" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                                <i class="ti ti-home d-md-none d-block"></i>
+                                <span class="d-none d-md-block">Today</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#monthly-ct" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                                <i class="ti ti-user-circle d-md-none d-block"></i>
+                                <span class="d-none d-md-block">Monthly</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#annual-ct" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                                <i class="ti ti-settings d-md-none d-block"></i>
+                                <span class="d-none d-md-block">Annual</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-xxl-8 border-end border-dashed">
+                            <div id="orders-chart" style="min-height: 405px;"></div>
+                        </div><!-- end col -->
+                        <div class="col-xxl-4">
+                            <div class="p-3 bg-light-subtle border-bottom border-dashed">
+                                <div class="row">
+                                    <div class="col">
+                                        <h4 class="fs-sm mb-1">Would you like the full report?</h4>
+                                        <small class="text-muted fs-xs mb-0">
+                                            All 120 orders have been successfully delivered
+                                        </small>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <button type="button" class="btn btn-sm btn-default rounded-circle btn-icon"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Download">
+                                            <i class="ti ti-download fs-xl"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-cols-xxl-2 row-cols-md-2 row-cols-1 g-1 p-1">
+                                <!-- Total Sales Widget -->
+                                <div class="col">
+                                    <div class="card rounded-0 border shadow-none border-dashed mb-0">
+                                        <div class="card-body">
+                                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                                <h5 class="fs-xl mb-0">2100</h5>
+                                                <span>1.45% <i class="ti ti-arrow-up text-success"></i></span>
+                                            </div>
+                                            <p class="text-muted mb-2"><span>Calories consumed in period</span></p>
+                                            <div class="progress progress-sm mb-0">
+                                                <div class="progress-bar bg-secondary" role="progressbar"
+                                                    style="width: 18.45%" aria-valuenow="18.45" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+
+                                <!-- Number of Customers Widget -->
+                                <div class="col">
+                                    <div class="card rounded-0 border shadow-none border-dashed mb-0">
+                                        <div class="card-body">
+                                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                                <h5 class="fs-xl mb-0">90</h5>
+                                                <span>0.35% <i class="ti ti-arrow-down text-danger"></i></span>
+                                            </div>
+                                            <p class="text-muted mb-2"><span>Cardio minutes in period</span></p>
+                                            <div class="progress progress-sm mb-0">
+                                                <div class="progress-bar bg-secondary" role="progressbar"
+                                                    style="width: 0.35%" aria-valuenow="0.35" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+
+
+                                <div class="col">
+                                    <div class="card rounded-0 border shadow-none border-dashed mb-0">
+                                        <div class="card-body">
+                                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                                <h5 class="fs-xl mb-0">21.6</h5>
+                                                <span>2.61% <i class="ti ti-bolt text-primary"></i></span>
+                                            </div>
+                                            <p class="text-muted mb-2 text-truncate"><span>Carbs consumed in period</span></p>
+                                            <div class="progress progress-sm mb-0">
+                                                <div class="progress-bar bg-secondary" role="progressbar"
+                                                    style="width: 2.61%" aria-valuenow="2.61" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+
+                                <!-- Average Order Value Widget -->
+                                <div class="col">
+                                    <div class="card rounded-0 border shadow-none border-dashed mb-0">
+                                        <div class="card-body">
+                                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                                <h5 class="fs-xl mb-0">39.49 <small class="fs-6">OZ</small>
+                                                </h5>
+                                                <span>5.92% <i class="ti ti-arrow-up text-success"></i></span>
+                                            </div>
+                                            <p class="text-muted mb-2"><span>H20 ounces consumed in period</span></p>
+                                            <div class="progress progress-sm mb-0">
+                                                <div class="progress-bar bg-secondary" role="progressbar"
+                                                    style="width: 5.92%" aria-valuenow="5.92" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                            </div><!-- end row -->
+
+                            <div class="text-center my-3">
+                                <a href=@Url.Action("Chat", "Apps") class="link-reset text-decoration-underline fw-semibold link-offset-3">
+                                    View detailed diet information <i class="ti ti-send-2"></i>
+                                </a>
+                            </div>
+                        </div> <!-- end col-->
+                    </div> <!-- end row-->
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div> <!-- end row-->
+
+    <div class="row">
+        <div class="col-xxl-6">
+            <div data-table data-table-rows-per-page="5" class="card">
+                <div class="card-header justify-content-between align-items-center border-dashed">
+                    <h4 class="card-title mb-0">Routines and Habits</h4>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-centered table-custom table-sm table-nowrap table-hover mb-0">
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/products/1.png" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("ProductDetails", "Ecommerce")
+                                                        class="text-body">Walkabout</a></h5>
+                                                <span class="text-muted fs-xs">6 Miles</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Duration</span>
+                                        <h5 class="fs-base mt-1 fw-normal">92 Minutes</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Streak</span>
+                                        <h5 class="fs-base mt-1 fw-normal">7</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Ratings</span>
+                                        <h5 class="fs-base mt-1 fw-normal">
+                                            <span class="text-warning">
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star"></span>
+                                            </span>
+                                            <span class="ms-1"><a href=@Url.Action("Reviews", "Ecommerce")
+                                                    class="link-reset fw-semibold">(45)</a></span>
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Status</span>
+                                        <h5 class="fs-base mt-1 fw-normal"><i
+                                                class="ti ti-circle-filled fs-xs text-success"></i> Completed</h5>
+                                    </td>
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View Details</a>
+                                                <a href="#" class="dropdown-item">Remove</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>                                
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/products/1.png" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("ProductDetails", "Ecommerce")
+                                                        class="text-body">Meditation</a></h5>
+                                                <span class="text-muted fs-xs">1 Session</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Duration</span>
+                                        <h5 class="fs-base mt-1 fw-normal">30 Minutes</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Streak</span>
+                                        <h5 class="fs-base mt-1 fw-normal">152</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Ratings</span>
+                                        <h5 class="fs-base mt-1 fw-normal">
+                                            <span class="text-warning">
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star"></span>
+                                            </span>
+                                            <span class="ms-1"><a href=@Url.Action("Reviews", "Ecommerce")
+                                                    class="link-reset fw-semibold">(45)</a></span>
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Status</span>
+                                        <h5 class="fs-base mt-1 fw-normal"><i
+                                                class="ti ti-circle-filled fs-xs text-success"></i> Completed</h5>
+                                    </td>
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View Details</a>
+                                                <a href="#" class="dropdown-item">Remove</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/products/1.png" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("ProductDetails", "Ecommerce")
+                                                        class="text-body">Lawnmowing</a></h5>
+                                                <span class="text-muted fs-xs">1 Hour</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Duration</span>
+                                        <h5 class="fs-base mt-1 fw-normal">60 Minutes</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Streak</span>
+                                        <h5 class="fs-base mt-1 fw-normal">n/a</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Ratings</span>
+                                        <h5 class="fs-base mt-1 fw-normal">
+                                            <span class="text-warning">
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star-filled"></span>
+                                                <span class="ti ti-star"></span>
+                                            </span>
+                                            <span class="ms-1"><a href=@Url.Action("Reviews", "Ecommerce")
+                                                    class="link-reset fw-semibold">(45)</a></span>
+                                        </h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Status</span>
+                                        <h5 class="fs-base mt-1 fw-normal"><i
+                                                class="ti ti-circle-filled fs-xs text-danger"></i> Pending</h5>
+                                    </td>
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View Details</a>
+                                                <a href="#" class="dropdown-item">Remove</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+                </div> <!-- end card-body-->
+
+                <div class="card-footer border-0">
+                    <div class="align-items-center justify-content-between row text-center text-sm-start">
+                        <div class="col-sm">
+                            <div data-table-pagination-info="products"></div>
+                        </div>
+                        <div class="col-sm-auto mt-3 mt-sm-0">
+                            <div data-table-pagination></div>
+                        </div> <!-- end col-->
+                    </div> <!-- end row-->
+                </div> <!-- end card-footer-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+
+        <div class="col-xxl-6">
+            <div data-table data-table-rows-per-page="5" class="card">
+                <div class="card-header justify-content-between align-items-center border-dashed">
+                    <h4 class="card-title mb-0">Most Recent Meal</h4>
+
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-centered table-custom table-sm table-nowrap table-hover mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/users/user-2.jpg" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("FoodDetails", "Diet")
+                                                        class="text-body">DAG Spaghetti Sauce</a></h5>
+                                                <span class="text-muted fs-xs">1 Serving</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Calories</span>
+                                        <h5 class="fs-base mt-1 fw-normal">725</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Carbohydrates</span>
+                                        <h5 class="fs-base mt-1 fw-normal">18</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Fat Grams</span>
+                                        <h5 class="fs-base mt-1 fw-normal">25</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Cost</span>
+                                        <h5 class="fs-base mt-1 fw-normal">$6.99</h5>
+                                    </td>
+
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View details</a>
+                                                <a href="#" class="dropdown-item">Add to shopping list</a>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/users/user-1.jpg" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("FoodDetails", "Diet")
+                                                        class="text-body">Shasta Root Beer</a></h5>
+                                                <span class="text-muted fs-xs">1 Can</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Calories</span>
+                                        <h5 class="fs-base mt-1 fw-normal">0</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Carbohydrates</span>
+                                        <h5 class="fs-base mt-1 fw-normal">0</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Fat Grams</span>
+                                        <h5 class="fs-base mt-1 fw-normal">0</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Cost</span>
+                                        <h5 class="fs-base mt-1 fw-normal">$0.65</h5>
+                                    </td>
+
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View details</a>
+                                                <a href="#" class="dropdown-item">Add to shopping list</a>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/users/user-4.jpg" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("FoodDetails", "Diet")
+                                                        class="text-body">Hard Boiled Eggs</a></h5>
+                                                <span class="text-muted fs-xs">2 Each</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Calories</span>
+                                        <h5 class="fs-base mt-1 fw-normal">125</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Carbohydrates</span>
+                                        <h5 class="fs-base mt-1 fw-normal">0</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Fat Grams</span>
+                                        <h5 class="fs-base mt-1 fw-normal">0</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Cost</span>
+                                        <h5 class="fs-base mt-1 fw-normal">$1.09</h5>
+                                    </td>
+
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View details</a>
+                                                <a href="#" class="dropdown-item">Add to shopping list</a>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="~/images/users/user-1.jpg" alt=""
+                                                class="avatar-sm rounded-circle me-2">
+                                            <div>
+                                                <h5 class="fs-base my-1"><a href=@Url.Action("FoodDetails", "Diet")
+                                                        class="text-body">American Beauty Spaghetti</a></h5>
+                                                <span class="text-muted fs-xs">13.5 Ounces</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Calories</span>
+                                        <h5 class="fs-base mt-1 fw-normal">1126</h5>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted fs-xs">Carbohydrates</span>
+                                        <h5 class="fs-base mt-1 fw-normal">526</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Fat Grams</span>
+                                        <h5 class="fs-base mt-1 fw-normal">626</h5>
+                                    </td>                                    
+                                    <td>
+                                        <span class="text-muted fs-xs">Cost</span>
+                                        <h5 class="fs-base mt-1 fw-normal">$2.11</h5>
+                                    </td>
+
+                                    <td style="width: 30px;">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle text-muted drop-arrow-none card-drop p-0"
+                                                data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical fs-lg"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="#" class="dropdown-item">View details</a>
+                                                <a href="#" class="dropdown-item">Add to shopping list</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+                </div> <!-- end card-body-->
+
+                <div class="card-footer border-0">
+                    <div class="align-items-center justify-content-between row text-center text-sm-start">
+                        <div class="col-sm">
+                            <div data-table-pagination-info="orders"></div>
+                        </div>
+                        <div class="col-sm-auto mt-3 mt-sm-0">
+                            <div data-table-pagination></div>
+                        </div> <!-- end col-->
+                    </div> <!-- end row-->
+                </div> <!-- end card-footer-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div> <!-- end row-->
+
+</div>
+
+@section scripts
+{
+    <!-- Vendor js -->
+    <script src="~/js/vendors.min.js"></script>
+
+    <!-- E Charts js -->
+    <script src="~/plugins/echarts/echarts.min.js"></script>
+
+    <!-- JVector Maps-->
+    <script src="~/plugins/jsvectormap/jsvectormap.min.js"></script>
+    <script src="~/js/maps/world.js"></script>
+
+    <!-- Custom table -->
+    <script src="~/js/pages/custom-table.js"></script>
+
+    <!-- Dashboard 2 Page js -->
+    <script src="~/js/pages/dashboard.js"></script>
+}

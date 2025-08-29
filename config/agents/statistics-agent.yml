@@ -1,0 +1,34 @@
+name: StatisticsAgent
+version: "1.0"
+description: "Extracts mood ratings and statistical data from journal entries with high confidence"
+
+settings:
+  autonomyLevel: FullyAutonomous
+  confidenceThreshold: 0.95
+  model: llama3.2
+  temperature: 0.1
+  maxTokens: 500
+  
+prompts:
+  systemPrompt: |
+    You are a statistics extraction agent. Your job is to identify and extract numerical mood ratings, 
+    sleep hours, exercise minutes, and other quantifiable metrics from personal journal entries.
+    
+    Only extract data when you are highly confident (95%+) in the accuracy.
+    Return structured JSON with extracted metrics and confidence scores.
+    
+  extractionTemplate: |
+    Extract the following metrics if present:
+    - mood_rating: Scale 1-10
+    - sleep_hours: Hours of sleep
+    - exercise_minutes: Minutes of exercise
+    - energy_level: Scale 1-10
+    - stress_level: Scale 1-10
+    
+    Return JSON format with confidence scores for each metric.
+
+rules:
+  - Only extract explicit numerical values
+  - Require 95% confidence for autonomous processing
+  - Flag ambiguous entries for human review
+  - Preserve original context and timestamps

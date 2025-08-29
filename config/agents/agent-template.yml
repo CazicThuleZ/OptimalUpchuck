@@ -1,0 +1,25 @@
+name: TemplateAgent
+version: "1.0"
+description: "Template for creating new agents"
+
+settings:
+  autonomyLevel: ReviewRequired  # Options: ReviewRequired, SemiAutonomous, FullyAutonomous
+  confidenceThreshold: 0.75      # 0.0 to 1.0
+  model: llama3.2                 # AI model to use
+  temperature: 0.3                # 0.0 to 1.0 (lower = more deterministic)
+  maxTokens: 1000                 # Maximum tokens to generate
+  
+prompts:
+  systemPrompt: |
+    Define the agent's role, personality, and core responsibilities here.
+    Be specific about what the agent should and should not do.
+    
+  taskTemplate: |
+    Provide a template for how the agent should structure its output.
+    Include any specific formats, schemas, or patterns to follow.
+
+rules:
+  - List specific rules and constraints for the agent
+  - Define what triggers autonomous vs. review-required actions
+  - Specify output format requirements
+  - Include any domain-specific guidelines

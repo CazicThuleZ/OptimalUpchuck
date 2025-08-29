@@ -1,0 +1,89 @@
+{
+  "statisticsAgent": {
+    "moodExtraction": {
+      "pattern": "mood:\\s*(\\d+)/(\\d+)",
+      "responses": [
+        {
+          "input_contains": "mood: 5/5",
+          "confidence": 0.98,
+          "extracted_data": {
+            "mood": 5,
+            "scale": 5,
+            "context": "Explicitly stated mood rating"
+          }
+        },
+        {
+          "input_contains": "mood: 4/5",
+          "confidence": 0.95,
+          "extracted_data": {
+            "mood": 4,
+            "scale": 5,
+            "context": "Explicitly stated mood rating"
+          }
+        },
+        {
+          "input_contains": "feeling great",
+          "confidence": 0.75,
+          "extracted_data": {
+            "mood": 4,
+            "scale": 5,
+            "context": "Inferred from positive language"
+          }
+        },
+        {
+          "input_contains": "terrible day",
+          "confidence": 0.70,
+          "extracted_data": {
+            "mood": 2,
+            "scale": 5,
+            "context": "Inferred from negative language"
+          }
+        }
+      ],
+      "default_response": {
+        "confidence": 0.30,
+        "extracted_data": {
+          "mood": 3,
+          "scale": 5,
+          "context": "No clear mood indicators found - neutral default"
+        }
+      }
+    }
+  },
+  "bloggingAgent": {
+    "contentCuration": {
+      "responses": [
+        {
+          "input_contains": "interesting insight",
+          "confidence": 0.85,
+          "extracted_content": "Mock extracted content for testing",
+          "rationale": "Contains explicit insight language suggesting blog-worthy content",
+          "suggested_title": "Insights from Daily Reflection",
+          "tags": ["reflection", "insights"]
+        },
+        {
+          "input_contains": "learned something",
+          "confidence": 0.70,
+          "extracted_content": "Mock learning content for testing",
+          "rationale": "Learning experiences often make good blog content",
+          "suggested_title": "Learning Notes",
+          "tags": ["learning", "personal-growth"]
+        }
+      ],
+      "default_response": {
+        "confidence": 0.20,
+        "extracted_content": null,
+        "rationale": "Content does not meet blog-worthy criteria in mock mode",
+        "suggested_title": null,
+        "tags": []
+      }
+    }
+  },
+  "mockServiceConfig": {
+    "simulateLatency": true,
+    "latencyMs": 500,
+    "simulateFailures": false,
+    "failureRate": 0.0,
+    "enableLogging": true
+  }
+}
