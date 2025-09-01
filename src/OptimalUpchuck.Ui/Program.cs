@@ -1,4 +1,7 @@
+
 using OptimalUpchuck.Infrastructure.Configuration;
+using OptimalUpchuck.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using HealthChecks.UI.Client;
 
@@ -6,6 +9,26 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add Entity Framework with PostgreSQL
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorCodesToAdd: null);
+        npgsqlOptions.MigrationsAssembly("OptimalUpchuck.Infrastructure");
+    });
+    
+    // Enable sensitive data logging only in development
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+    }
+});
 
 // Configure strongly-typed configuration
 builder.Services.Configure<RabbitMQConfiguration>(
